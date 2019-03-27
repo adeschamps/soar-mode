@@ -1,3 +1,14 @@
+;;; soar-mode.el --- A major mode for the Soar language
+
+;; Version 0.1
+;; Keywords: languages, soar
+;; URL: https://github.com/adeschamps/soar-mode
+
+;;; Commentary:
+
+;; This package provides syntax highlighting and indentation for the
+;; Soar language (https://soar.eecs.umich.edu/).
+
 (defvar soar-mode-hook nil)
 
 (defvar soar-mode-map
@@ -80,4 +91,8 @@
 ;;  (set (make-local-variable 'font-lock-keywords-only) t)
   (set 'default-tab-width 4))
 
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.soar\\'" . soar-mode))
+
 (provide 'soar-mode)
+;;; soar-mode.el ends here
