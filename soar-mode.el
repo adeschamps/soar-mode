@@ -91,7 +91,6 @@
   (set (make-local-variable 'font-lock-defaults) '(soar-font-lock-keywords))
   (set (make-local-variable 'indent-line-function) 'soar-indent-line)
   (setq font-lock-keywords-only t)
-;;  (set (make-local-variable 'font-lock-keywords-only) t)
   (set 'default-tab-width 4))
 
 ;;;###autoload
