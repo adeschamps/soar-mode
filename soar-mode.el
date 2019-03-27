@@ -55,7 +55,7 @@
       (t 0))))
   (if (bolp) (back-to-indentation)))
 
-(defun blank-line-p ()
+(defun soar-blank-line-p ()
   "Predicate to test whether a line is empty."
   (= (current-indentation)
      (- (line-end-position) (line-beginning-position))))
@@ -67,7 +67,7 @@
     ;; Set cur-indent to the indentation of the previous line.
     (save-excursion
       ;; Go to the last non-empty line
-      (while (progn (forward-line -1) (blank-line-p)))
+      (while (progn (forward-line -1) (soar-blank-line-p)))
       (back-to-indentation)
       (setf cur-indent (current-indentation))
       ;; If the first character was a '-', then cur-indent should be one larger
