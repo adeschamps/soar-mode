@@ -1,6 +1,6 @@
 ;;; soar-mode.el --- A major mode for the Soar language
 
-;; Version 0.1
+;; Version: 0.1
 ;; Keywords: languages, soar
 ;; URL: https://github.com/adeschamps/soar-mode
 
