@@ -9,13 +9,15 @@
 ;; This package provides syntax highlighting and indentation for the
 ;; Soar language (https://soar.eecs.umich.edu/).
 
+;;; Code:
+
 (defvar soar-mode-hook nil)
 
 (defvar soar-mode-map
   (let ((map (make-keymap)))
     (define-key map "\C-j" 'newline-and-indent)
     map)
-  "Keymap for Soar major mode")
+  "Keymap for Soar major mode.")
 
 (defconst soar-mode-font-lock-keywords
   "\\b\\(source\\|sp\\|state\\)\\b")
@@ -29,13 +31,13 @@
    '("<[^>]+>"                        . font-lock-constant-face)      ;; <s>
    '("\\[ *\\([^ ]+\\)"               1 font-lock-function-name-face) ;; [ngs-tag ... ]
    )
-  "Highlighting expressions for Soar mode")
+  "Highlighting expressions for Soar mode.")
 
 (defvar soar-font-lock-keywords soar-font-lock-keywords-1
-  "Highlighting for Soar mode")
+  "Highlighting for Soar mode.")
 
 (defun soar-indent-line ()
-  "Indent current line as Soar code"
+  "Indent current line as Soar code."
   (interactive)
   (save-excursion
     (back-to-indentation)
@@ -54,12 +56,12 @@
   (if (bolp) (back-to-indentation)))
 
 (defun blank-line-p ()
-  "Predicate to test whether a line is empty"
+  "Predicate to test whether a line is empty."
   (= (current-indentation)
      (- (line-end-position) (line-beginning-position))))
 
 (defun soar-indent-line-2 ()
-  "Indent current line of Soar code"
+  "Indent current line of Soar code."
   (interactive)
   (save-excursion
     ;; Set cur-indent to the indentation of the previous line.
