@@ -1,0 +1,83 @@
+(defvar soar-mode-hook nil)
+
+(defvar soar-mode-map
+  (let ((map (make-keymap)))
+    (define-key map "\C-j" 'newline-and-indent)
+    map)
+  "Keymap for Soar major mode")
+
+(defconst soar-mode-font-lock-keywords
+  "\\b\\(source\\|sp\\|state\\)\\b")
+
+(defconst soar-font-lock-keywords
+  (list
+   '("\\$[^ \.]+"                     . font-lock-preprocessor-face)  ;; $OUTPUT-LINK
+   (list soar-mode-font-lock-keywords 1 font-lock-keyword-face)       ;; keywords
+   '("#[^\n]*"                        . font-lock-comment-face)       ;; # comment
+   '("\\^[^ ]+"                       . font-lock-variable-name-face) ;; ^this.that
+   '("<[^>]+>"                        . font-lock-constant-face)      ;; <s>
+   '("\\[ *\\([^ ]+\\)"               1 font-lock-function-name-face) ;; [ngs-tag ... ]
+   )
+  "Highlighting expressions for Soar mode")
+
+(defvar soar-font-lock-keywords soar-font-lock-keywords-1
+  "Highlighting for Soar mode")
+
+(defun soar-indent-line ()
+  "Indent current line as Soar code"
+  (interactive)
+  (save-excursion
+    (back-to-indentation)
+    (indent-line-to
+     (cond
+      ((bobp)             0)
+      ((looking-at "sp")  0)
+      ((looking-at "-->") 0)
+      ((looking-at "\(")  default-tab-width)
+      ((looking-at "\\[") default-tab-width)
+      ((looking-at "-?\\^") (- (save-excursion (forward-line -1) (beginning-of-line)
+                                               (if (looking-at "^[^^]+\\(\\^\\)")
+                                                   (- (match-beginning 1) (match-beginning 0)) 0))
+                               (if (looking-at "-") 1 0)))
+      (t 0))))
+  (if (bolp) (back-to-indentation)))
+
+(defun blank-line-p ()
+  "Predicate to test whether a line is empty"
+  (= (current-indentation)
+     (- (line-end-position) (line-beginning-position))))
+
+(defun soar-indent-line-2 ()
+  "Indent current line of Soar code"
+  (interactive)
+  (save-excursion
+    ;; Set cur-indent to the indentation of the previous line.
+    (save-excursion
+      ;; Go to the last non-empty line
+      (while (progn (forward-line -1) (blank-line-p)))
+      (back-to-indentation)
+      (setf cur-indent (current-indentation))
+      ;; If the first character was a '-', then cur-indent should be one larger
+      (if (looking-at "-") (setf cur-indent (1+ cur-indent)))
+      (if (looking-at "sp") (setf cur-indent default-tab-width))
+      (if (looking-at "\"") (setf cur-indent 0))
+
+      (end-of-line)
+      (if (looking-back "[({[]") (setf cur-indent (+ cur-indent default-tab-width))))
+
+    (end-of-line)
+    (if (looking-back "[)}\]]") (setf cur-indent (- cur-indent default-tab-width)))
+
+    (indent-line-to cur-indent))
+  (if (bolp) (back-to-indentation)))
+
+
+(define-derived-mode soar-mode fundamental-mode "Soar"
+  "Major mode for editing Soar files"
+  (set (make-local-variable 'font-lock-defaults) '(soar-font-lock-keywords))
+  (set (make-local-variable 'indent-line-function) 'soar-indent-line)
+  (setq font-lock-keywords-only t)
+;;  (set (make-local-variable 'font-lock-keywords-only) t)
+  (set 'default-tab-width 4))
+
+(provide 'soar-mode)
