@@ -3,6 +3,7 @@
 ;; Version: 0.1
 ;; Keywords: languages, soar
 ;; URL: https://github.com/adeschamps/soar-mode
+;; License: BSD-3-Clause
 
 ;;; Commentary:
 
