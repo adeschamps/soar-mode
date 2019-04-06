@@ -45,6 +45,12 @@
 
 (defvar soar-mode-hook nil)
 
+(defcustom soar-mode-tab-width
+  default-tab-width
+  "Default tab width inside productions."
+  :type 'integer
+  :group 'soar-mode)
+
 (defvar soar-mode-map
   (let ((map (make-keymap)))
     (define-key map "\C-j" 'newline-and-indent)
@@ -78,8 +84,8 @@
       ((bobp)             0)
       ((looking-at "sp")  0)
       ((looking-at "-->") 0)
-      ((looking-at "\(")  default-tab-width)
-      ((looking-at "\\[") default-tab-width)
+      ((looking-at "\(")  soar-mode-tab-width)
+      ((looking-at "\\[") soar-mode-tab-width)
       ((looking-at "-?\\^") (- (save-excursion (forward-line -1) (beginning-of-line)
                                                (if (looking-at "^[^^]+\\(\\^\\)")
                                                    (- (match-beginning 1) (match-beginning 0)) 0))
@@ -104,14 +110,14 @@
       (defvar soar-mode-cur-indent (current-indentation))
       ;; If the first character was a '-', then soar-mode-cur-indent should be one larger
       (if (looking-at "-") (setf soar-mode-cur-indent (1+ soar-mode-cur-indent)))
-      (if (looking-at "sp") (setf soar-mode-cur-indent default-tab-width))
+      (if (looking-at "sp") (setf soar-mode-cur-indent soar-mode-tab-width))
       (if (looking-at "\"") (setf soar-mode-cur-indent 0))
 
       (end-of-line)
-      (if (looking-back "[({[]" nil) (setf soar-mode-cur-indent (+ soar-mode-cur-indent default-tab-width))))
+      (if (looking-back "[({[]" nil) (setf soar-mode-cur-indent (+ soar-mode-cur-indent soar-mode-tab-width))))
 
     (end-of-line)
-    (if (looking-back "[)}\]]" nil) (setf soar-mode-cur-indent (- soar-mode-cur-indent default-tab-width)))
+    (if (looking-back "[)}\]]" nil) (setf soar-mode-cur-indent (- soar-mode-cur-indent soar-mode-tab-width)))
 
     (indent-line-to soar-mode-cur-indent))
   (if (bolp) (back-to-indentation)))
@@ -121,8 +127,7 @@
   "Major mode for editing Soar files"
   (set (make-local-variable 'font-lock-defaults) '(soar-font-lock-keywords))
   (set (make-local-variable 'indent-line-function) 'soar-indent-line)
-  (setq font-lock-keywords-only t)
-  (set 'default-tab-width 4))
+  (setq font-lock-keywords-only t))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.soar\\'" . soar-mode))
