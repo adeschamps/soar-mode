@@ -70,19 +70,19 @@
       ;; Go to the last non-empty line
       (while (progn (forward-line -1) (soar-blank-line-p)))
       (back-to-indentation)
-      (setf cur-indent (current-indentation))
-      ;; If the first character was a '-', then cur-indent should be one larger
-      (if (looking-at "-") (setf cur-indent (1+ cur-indent)))
-      (if (looking-at "sp") (setf cur-indent default-tab-width))
-      (if (looking-at "\"") (setf cur-indent 0))
+      (defvar soar-mode-cur-indent (current-indentation))
+      ;; If the first character was a '-', then soar-mode-cur-indent should be one larger
+      (if (looking-at "-") (setf soar-mode-cur-indent (1+ soar-mode-cur-indent)))
+      (if (looking-at "sp") (setf soar-mode-cur-indent default-tab-width))
+      (if (looking-at "\"") (setf soar-mode-cur-indent 0))
 
       (end-of-line)
-      (if (looking-back "[({[]") (setf cur-indent (+ cur-indent default-tab-width))))
+      (if (looking-back "[({[]" nil) (setf soar-mode-cur-indent (+ soar-mode-cur-indent default-tab-width))))
 
     (end-of-line)
-    (if (looking-back "[)}\]]") (setf cur-indent (- cur-indent default-tab-width)))
+    (if (looking-back "[)}\]]" nil) (setf soar-mode-cur-indent (- soar-mode-cur-indent default-tab-width)))
 
-    (indent-line-to cur-indent))
+    (indent-line-to soar-mode-cur-indent))
   (if (bolp) (back-to-indentation)))
 
 
