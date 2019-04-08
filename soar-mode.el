@@ -46,7 +46,7 @@
 (defvar soar-mode-hook nil)
 
 (defcustom soar-mode-tab-width
-  default-tab-width
+  4
   "Default tab width inside productions."
   :type 'integer
   :group 'soar-mode)
