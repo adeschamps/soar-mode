@@ -117,8 +117,8 @@
 
 (define-derived-mode soar-mode prog-mode "Soar"
   "Major mode for editing Soar files"
-  (set (make-local-variable 'font-lock-defaults) '(soar-font-lock-keywords))
-  (set (make-local-variable 'indent-line-function) 'soar-indent-line)
+  (setq font-lock-defaults '(soar-font-lock-keywords))
+  (setq indent-line-function 'soar-indent-line)
   (setq font-lock-keywords-only t))
 
 ;;;###autoload
