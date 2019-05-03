@@ -43,19 +43,11 @@
 
 ;;; Code:
 
-(defvar soar-mode-hook nil)
-
 (defcustom soar-mode-tab-width
   4
   "Default tab width inside productions."
   :type 'integer
   :group 'soar-mode)
-
-(defvar soar-mode-map
-  (let ((map (make-keymap)))
-    (define-key map "\C-j" 'newline-and-indent)
-    map)
-  "Keymap for Soar major mode.")
 
 (defconst soar-mode-font-lock-keywords
   "\\b\\(source\\|sp\\|state\\)\\b")
