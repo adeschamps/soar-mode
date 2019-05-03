@@ -90,31 +90,6 @@
   (= (current-indentation)
      (- (line-end-position) (line-beginning-position))))
 
-(defun soar-indent-line-2 ()
-  "Indent current line of Soar code."
-  (interactive)
-  (save-excursion
-    ;; Set cur-indent to the indentation of the previous line.
-    (save-excursion
-      ;; Go to the last non-empty line
-      (while (progn (forward-line -1) (soar-blank-line-p)))
-      (back-to-indentation)
-      (defvar soar-mode-cur-indent (current-indentation))
-      ;; If the first character was a '-', then soar-mode-cur-indent should be one larger
-      (if (looking-at "-") (setf soar-mode-cur-indent (1+ soar-mode-cur-indent)))
-      (if (looking-at "sp") (setf soar-mode-cur-indent soar-mode-tab-width))
-      (if (looking-at "\"") (setf soar-mode-cur-indent 0))
-
-      (end-of-line)
-      (if (looking-back "[({[]" nil) (setf soar-mode-cur-indent (+ soar-mode-cur-indent soar-mode-tab-width))))
-
-    (end-of-line)
-    (if (looking-back "[)}\]]" nil) (setf soar-mode-cur-indent (- soar-mode-cur-indent soar-mode-tab-width)))
-
-    (indent-line-to soar-mode-cur-indent))
-  (if (bolp) (back-to-indentation)))
-
-
 (define-derived-mode soar-mode prog-mode "Soar"
   "Major mode for editing Soar files"
   (setq font-lock-defaults '(soar-font-lock-keywords))
