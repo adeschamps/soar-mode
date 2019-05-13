@@ -1,3 +1,5 @@
+[![MELPA](https://melpa.org/packages/soar-mode-badge.svg)](https://melpa.org/#/soar-mode)
+
 # `soar-mode`: A major Emacs mode for the Soar language
 
 This package provides syntax highlighting and indentation for the
